@@ -55,7 +55,7 @@ form:
     parameters:
       qa-space: qa
       prod-space: prod
-      prod-app-name: "{{services.app-repo.parameters.repo_name}}"
+      prod-app-name: "{{services.ops-app-repo.parameters.repo_name}}"
     schema:
       $ref: deploy.json
   githubpublic:
