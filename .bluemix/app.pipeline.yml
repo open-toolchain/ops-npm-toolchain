@@ -67,8 +67,7 @@ stages:
     stage: OPS build from NPM registry
     job: Build
   triggers:
-  - type: stage
-    enabled: false
+  - enabled: false
   jobs:
   - name: Deploy
     type: deployer
