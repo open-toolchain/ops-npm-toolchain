@@ -1,0 +1,82 @@
+---
+stages:
+- name: OPS build from NPM registry
+  inputs:
+  - service: ${APP_REPO}
+    type: git
+    branch: master
+  triggers:
+  - type: commit
+  jobs:
+  - name: Build
+    type: builder
+    extension_id: ibm.devops.services.pipeline.npm.build
+    SERVICE_INSTANCE: (default)
+    BUILD_COMMAND: |
+      #!/bin/bash
+      # environment variables are available:
+      # NPM_NAME: name of the service instance
+      # NPM_USER_ID: userid for the npm registry
+      # NPM_TOKEN: the token or password for the npm registry
+      # NPM_RELEASE_URL: the private NPM registry
+      # NPM_MIRROR_URL: the proxy NPM registry, used as the default NPM registry
+      # NPM_MODULE_NAME: the module name of the package.json at the root of the workspace if available.
+
+      npm install
+    SERVICE_INSTANCE_TYPE: nexus
+- name: Deploy [QA]
+  inputs:
+  - type: job
+    stage: OPS build from NPM registry
+    job: Build
+  triggers:
+  - type: stage
+  properties:
+  - name: CF_APP_NAME
+    value: undefined
+    type: text
+  jobs:
+  - name: Deploy
+    type: deployer
+    target:
+      region_id: ${QA_REGION_ID}
+      organization: ${QA_ORG_NAME}
+      space: ${QA_SPACE_NAME}
+      application: qa-${CF_APP_NAME}
+    script: |
+      #!/bin/bash
+
+      cf push "${CF_APP}" --hostname "${CF_APP}" -m 64M -p .
+- name: System Test [QA]
+  inputs:
+  - type: job
+    stage: OPS build from NPM registry
+    job: Build
+    dir_name: null
+  triggers:
+  - type: stage
+  jobs:
+  - name: Test
+    type: tester
+    script: |-
+      #!/bin/bash
+
+      # curl goes here
+- name: Deploy [PROD]
+  inputs:
+  - type: job
+    stage: OPS build from NPM registry
+    job: Build
+    dir_name: null
+  jobs:
+  - name: Deploy
+    type: deployer
+    target:
+      region_id: ${PROD_REGION_ID}
+      organization: ${PROD_ORG_NAME}
+      space: ${PROD_SPACE_NAME}
+      application: ${CF_APP_NAME}
+    script: |
+      #!/bin/bash
+
+      cf push "${CF_APP}" --hostname "${CF_APP}" -m 64M -p .

@@ -1,0 +1,66 @@
+version: '2'
+devlocales:
+  $ref: locales.yml
+template:
+  name: OPS-npm-nexus-scenario3
+  description: OPS-npm-nexus-scenario3
+  required:
+    - ops-app-build
+    - ops-app-repo
+  info:
+    git url: >-
+      [https://github.com/paulweb515/ops-npm-toolchain](https://github.com/paulweb515/ops-npm-toolchain)
+    git branch: '[master](https://github.com/paulweb515/ops-npm-toolchain/tree/master)'
+toolchain:
+  name: 'OPS-npm-scenario3-{{timestamp}}'
+services:
+    ops-app-build:
+      parameters:
+          services:
+            - ops-app-repo
+          name: 'app-{{toolchain.name}}'
+          configuration:
+            content:
+              $ref: app.pipeline.yml
+              $refType: text
+            env:
+              CF_APP_NAME: '{{form.pipeline.parameters.prod-app-name}}'
+              QA_SPACE_NAME: '{{form.pipeline.parameters.qa-space}}'
+              QA_ORG_NAME: '{{form.pipeline.parameters.qa-organization}}'
+              QA_REGION_ID: '{{form.pipeline.parameters.qa-region}}'
+              PROD_SPACE_NAME: '{{form.pipeline.parameters.prod-space}}'
+              PROD_ORG_NAME: '{{form.pipeline.parameters.prod-organization}}'
+              PROD_REGION_ID: '{{form.pipeline.parameters.prod-region}}'
+              APP_REPO: ops-app-repo
+            execute: true
+      service_id: pipeline
+    ops-app-repo:
+      parameters:
+        has_issues: true
+        repo_name: '{{form.githubpublic.parameters.app-repo_name}}'
+        repo_url: '{{form.githubpublic.parameters.app-repo_url}}'
+        type: clone
+      service_id: githubpublic
+    npm-nexus:
+      parameters:
+        dashboard_url: https://nexus3.mybluemix.net/
+        label: npm-nexus
+        mirror_url: https://nexus3.mybluemix.net/repository/npm-public
+        name: npm-nexus
+        release_url: https://nexus3.mybluemix.net/repository/ids-npm
+        type: npm
+      service_id: nexus
+form:
+  pipeline:
+    parameters:
+      qa-space: qa
+      prod-space: prod
+      prod-app-name: "{{services.app-repo.parameters.repo_name}}"
+    schema:
+      $ref: deploy.json
+  githubpublic:
+    parameters:
+      app-repo_name: 'app-{{toolchain.name}}'
+      app-repo_url: 'https://github.com/open-toolchain/ops-simple-app.git'
+    schema:
+      $ref: github.json
