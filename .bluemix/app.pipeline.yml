@@ -42,11 +42,11 @@ stages:
       region_id: ${QA_REGION_ID}
       organization: ${QA_ORG_NAME}
       space: ${QA_SPACE_NAME}
-      application: qa-${CF_APP_NAME}
+      application: ${CF_APP_NAME}
     script: |
       #!/bin/bash
 
-      cf push "${CF_APP}" --hostname "${CF_APP}" -m 64M -p .
+      cf push qa-"${CF_APP}" --hostname qa-"${CF_APP}" -m 64M -p .
 - name: System Test [QA]
   inputs:
   - type: job
