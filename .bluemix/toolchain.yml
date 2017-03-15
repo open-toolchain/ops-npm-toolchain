@@ -43,11 +43,8 @@ services:
       service_id: githubpublic
     npm-nexus:
       parameters:
-        dashboard_url: https://nexus3.mybluemix.net/
         label: npm-nexus
-        mirror_url: https://nexus3.mybluemix.net/repository/npm-public
         name: npm-nexus
-        release_url: https://nexus3.mybluemix.net/repository/ids-npm
         type: npm
       service_id: nexus
 form:
