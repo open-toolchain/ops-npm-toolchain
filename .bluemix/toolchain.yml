@@ -9,8 +9,8 @@ template:
     - ops-app-repo
   info:
     git url: >-
-      [https://github.com/paulweb515/ops-npm-toolchain](https://github.com/paulweb515/ops-npm-toolchain)
-    git branch: '[master](https://github.com/paulweb515/ops-npm-toolchain/tree/master)'
+      [https://github.com/open-toolchain/ops-npm-toolchain](https://github.com/open-toolchain/ops-npm-toolchain)
+    git branch: '[master](https://github.com/open-toolchain/ops-npm-toolchain/tree/master)'
 toolchain:
   name: 'OPS-npm-scenario3-{{timestamp}}'
 services:
