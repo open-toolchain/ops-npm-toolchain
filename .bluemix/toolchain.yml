@@ -1,6 +1,6 @@
 version: '2'
-devlocales:
-  $ref: locales.yml
+#devlocales:
+#  $ref: locales.yml
 template:
   name: OPS-npm-nexus-scenario3
   description: OPS-npm-nexus-scenario3
