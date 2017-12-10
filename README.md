@@ -12,7 +12,7 @@ To get started, click **Create toolchain**. You will need to fill in five items 
 - _Mirror or public URL_: Your npm virtual registry that can serve your private registry as well as the Global registry.
 
 
-[![Deploy To Bluemix](https://console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://console.ng.bluemix.net/devops/setup/deploy/?repository=https%3A//github.com/open-toolchain/ops-npm-toolchain)
+[![Deploy To Bluemix](https://console.bluemix.net/devops/graphics/create_toolchain_button.png)](https://console.bluemix.net/devops/setup/deploy/?repository=https%3A//github.com/open-toolchain/ops-npm-toolchain)
 
 For more information about toolchains, see [Custom toolchains in one click with IBM Bluemix DevOps Services](https://developer.ibm.com/devops-services/2016/06/16/open-toolchain-with-ibm-bluemix-devops-services/).
 
